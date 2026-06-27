@@ -1,15 +1,14 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim'
-            args '-p 3000:3000'
-        }
-    }
+    agent any
     stages {
-        stage('Build') {
-            steps {
-                sh 'npm install'
-            }
+        steps {
+            sh '''
+                docker run --rm \
+                    -v "${WORKSPACE}:/app" \
+                    -w /app \
+                    node:18-buster-slim \
+                    npm install
+            '''
         }
     }
 }
