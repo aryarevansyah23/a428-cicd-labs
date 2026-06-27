@@ -1,7 +1,8 @@
 pipeline {
     agent any
-    stages ('Build') {
-        steps {
+    stages {
+        stage ('Build') {
+            steps {
             sh '''
                 docker run --rm \
                     -v "${WORKSPACE}:/app" \
@@ -9,6 +10,7 @@ pipeline {
                     node:18-buster-slim \
                     npm install
             '''
+            }
         }
     }
 }
