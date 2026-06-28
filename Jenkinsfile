@@ -1,26 +1,19 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
     stages {
         stage ('Build') {
             steps {
-            sh '''
-                docker run --rm \
-                    -v "${WORKSPACE}":/app \
-                    -w /app \
-                    node:18-buster-slim \
-                    npm install
-            '''
+                sh 'npm install'
             }
         }
         stage ('Test') {
             steps {
-                sh '''
-                    docker run --rm \
-                        -v "${WORKSPACE}":/app \
-                        -w /app \
-                        node:18-buster-slim \
-                        npm test
-                '''
+                sh './jenkins/scripts/test.sh'
             }
         }
     }
