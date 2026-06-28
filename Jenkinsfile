@@ -18,6 +18,7 @@ pipeline {
                     docker run --rm \
                       -v "$WORKSPACE":/app \
                       -w /app \
+                      -e CI=true \
                       node:18-buster-slim \
                       sh ./jenkins/scripts/test.sh
                 '''
