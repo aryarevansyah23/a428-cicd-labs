@@ -5,7 +5,7 @@ pipeline {
             steps {
             sh '''
                 docker run --rm \
-                    -v "${WORKSPACE}:/app" \
+                    -v "${WORKSPACE}":/app \
                     -w /app \
                     node:18-buster-slim \
                     npm install
@@ -14,7 +14,13 @@ pipeline {
         }
         stage ('Test') {
             steps {
-                sh './jenkins/scripts/test.sh'
+                sh '''
+                    docker run --rm \
+                        -v "${WORKSPACE}":/app \
+                        -w /app \
+                        node:18-buster-slim \
+                        npm test
+                '''
             }
         }
     }
